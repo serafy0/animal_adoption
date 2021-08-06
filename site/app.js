@@ -9,14 +9,14 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const bodyParser = require("body-parser");
 
 const userRouter = require("./routes/users");
-const hobbyRouter = require("./routes/hobbies");
+const animalRouter = require("./routes/animals");
 
 // Database
 const db = require("./util/database");
 const passport = require("passport");
 
 const User = require("./models/user");
-const Hobby = require("./models/hobby");
+const Animal = require("./models/animals");
 
 const initPassport = require("./util/passport-config");
 initPassport(passport);
@@ -50,23 +50,25 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   if (!req.userId) {
-//     return next();
-//   }
-//   User.findOne({ where: { id: req.userId } })
-//     .then((user) => {
-//       req.user = user;
-//       next();
-//     })
-//     .catch((err) => console.log(err));
-// });
 
-app.use(hobbyRouter);
+app.use(animalRouter);
 app.use(userRouter);
 
-Hobby.belongsTo(User);
-User.hasMany(Hobby);
+User.hasMany(Animal, {as:"Poster",foreignKey:"postedById"});
+Animal.belongsTo(User, {as:"Poster",foreignKey:"postedById"})
+// Animal
+
+User.belongsToMany(Animal, {
+    through: "animal_user",
+    as: "requests",
+    foreignKey: "user_id"
+});
+
+Animal.belongsToMany(User, {
+    through: "animal_user",
+    as: "applicants",
+    foreignKey: "animal_id"
+});
 
 db.sync()
   .then(() => {
