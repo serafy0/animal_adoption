@@ -15,13 +15,13 @@ const Nav = () => {
         </NavigationList>
         <NavigationList $align={ALIGN.center}>
             <NavigationItem>
-                <StyledLink $as={Link} to="/about"to="/">Home</StyledLink>
+                <StyledLink $as={Link} to="/">Home</StyledLink>
             </NavigationItem>
             <NavigationItem>
-                <StyledLink $as={Link} to="/about" to="/sign-up">Sign up</StyledLink>
+                <StyledLink $as={Link}  to="/sign-up">Sign up</StyledLink>
             </NavigationItem>
             <NavigationItem>
-                <StyledLink $as={Link} to="/about" to="/sign-in">sign in</StyledLink>
+                <StyledLink $as={Link} to="/sign-in">sign in</StyledLink>
             </NavigationItem>
         </NavigationList>
 
