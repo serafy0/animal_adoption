@@ -1,106 +1,126 @@
 import { useState, useEffect } from "react";
-
+import AnimalCard from "./AnimalCard";
+import AnimalForm from "./AnimalForm";
+import {Grid, Cell} from 'baseui/layout-grid';
+import {
+  useSnackbar,
+} from 'baseui/snackbar';
+import {Check} from "baseui/icon";
+import {Block} from "baseui/block";
+import {H1, H3} from "baseui/typography";
 const Home = (userData) => {
-  const [hobby, setHobby] = useState({
-    title: "",
-    imgUrl: "",
+  const {enqueue} = useSnackbar();
+  const [animal, setAnimal] = useState({
+    name: "",
     description: "",
+    age: 0,
+    type:"",
+    breed: "",
+    address: "",
+    animal_img:null
+
   });
-  const [hobbies, setHobbies] = useState(null);
-  const handlChange = (e) => {
-    setHobby({ ...hobby, [e.target.name]: e.target.value });
+  const [animals, setAnimals] = useState(null);
+  const handleChange = (e) => {
+    setAnimal({ ...animal, [e.target.name]: e.target.value });
+  };
+  const uploadFile = (e) => {
+    setAnimal({ ...animal, ["animal_img"]: e[0] });
+    console.log(e)
   };
 
+
   useEffect(() => {
-    const fetchHobbies = async () => {
-      const data = await fetch("http://localhost:3001/get-hobby", {
-        headers: {
-          Authorization: `somesupersecretsecret ${userData.token}`,
-        },
+
+    const fetchAnimals= async () => {
+      const data = await fetch("http://localhost:3001/animals", {
       });
-      const hobbies = await data.json();
-      setHobbies(hobbies);
+      const animals = await data.json();
+      setAnimals(animals);
     };
-    fetchHobbies();
+    fetchAnimals();
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let formData = new FormData();
+    for(let ahh in animal){
+      formData.append(ahh, animal[ahh]);
+      console.error(ahh)
+    }
+    console.error("-----",animal)
     const settings = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${userData.token}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(hobby),
+      body: formData
     };
     try {
       const fetchResponse = await fetch(
-        `http://localhost:3001/add-hobby`,
+        `http://localhost:3001/add-animal`,
         settings
       );
+      enqueue({
+        message: 'announcement added',
+        startEnhancer: ({size}) => <Check size={size} />,
+      })
+
       const data = await fetchResponse.json();
+      animals.push(data)
+      setAnimal({ ...animal, [e.target.name]: e.target.value }); // i have no idea why it works
+
       return data;
     } catch (e) {
       return e;
     }
   };
+  console.log(animals)
   return (
-    <div>
+
+      <div>
       {userData.firstName ? (
         <div>
           <h1>Welcome {userData.firstName}</h1>
-          {hobbies ? (
+          {animals ? (
             <div>
-              <h3>Your Hobbies</h3>
-              <ul>
-                {hobbies.map((hobby) => (
-                  <li>{hobby.title}</li>
+              <h3>All Animals</h3>
+              <Grid
+              >
+              {animals.map((animal) => (
+                    <Cell span={[4]}>
+                      <AnimalCard animal={animal}>
+
+                      </AnimalCard>
+                    </Cell>
+
+
                 ))}
-              </ul>
+              </Grid>
+
+
             </div>
           ) : (
-            <h3>You have no hobbies yet</h3>
+            <H3>no animals to show</H3>
           )}
-          <h3>Add new hobby</h3>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="firstName">
-                Title
-                <input
-                  type="text"
-                  name="title"
-                  required
-                  value={hobby.title}
-                  onChange={handlChange}
-                />
-              </label>
-              <label htmlFor="imgUrl">
-                Image Url
-                <input
-                  type="text"
-                  name="imgUrl"
-                  value={hobby.imageUrl}
-                  onChange={handlChange}
-                />
-              </label>
-              <label htmlFor="password">
-                Description
-                <input
-                  type="description"
-                  name="description"
-                  value={hobby.description}
-                  onChange={handlChange}
-                />
-              </label>
-            </div>
-            <button type="submit">Submit</button>
-          </form>
+
+          <Block/>
+          <Grid >
+
+            <Cell >
+            </Cell>
+            <Cell  span={6}>
+           <AnimalForm upload={uploadFile} handleSubmit={handleSubmit} handleChange={handleChange} animal={animal} ></AnimalForm>
+            </Cell>
+            <Cell>
+            </Cell>
+
+          </Grid>
         </div>
       ) : (
-        <h1>Please sign in</h1>
+        <H1>Please sign in</H1>
       )}
     </div>
+
   );
 };
 export default Home;

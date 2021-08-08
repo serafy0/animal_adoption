@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import {Check, DeleteAlt} from "baseui/icon";
+import {
+  useSnackbar,
+} from 'baseui/snackbar';
+import {FormControl} from "baseui/form-control";
+import {Input} from "baseui/input";
+import {Button} from "baseui/button";
 
 function SignIn({ handleFetch, handleToken }) {
+  const {enqueue} = useSnackbar();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -28,39 +37,52 @@ function SignIn({ handleFetch, handleToken }) {
       const data = await fetchResponse.json();
       // handleToken(data.token)
       handleFetch(data);
+      localStorage.setItem("token",data.token)
+
+
       history.push("/");
+      enqueue({
+        message: 'log in successful',
+        startEnhancer: ({size}) => <Check size={size} />,
+      })
+
       return data;
     } catch (e) {
+      enqueue({
+        message: 'failed to login',
+        startEnhancer: ({size}) => <DeleteAlt size={size} />,
+      })
+
       return e;
     }
   };
   return (
     <div>
       <form onSubmit={handlSingIn}>
-        <div>
-          <label htmlFor="email">
-            Email
-            <input
+        <FormControl label="email">
+          <Input
               type="email"
               name="email"
               required
               value={user.email}
               onChange={handlChange}
-            />
-          </label>
-          <label htmlFor="password">
-            Password
-            <input
+          />
+        </FormControl>
+        <FormControl label="password">
+          <Input
               type="password"
               name="password"
               required
               value={user.password}
               onChange={handlChange}
-            />
-          </label>
-        </div>
-        <button type="submit">Sign in</button>
+          />
+        </FormControl>
+
+
+
+        <Button type="submit">Submit</Button>
       </form>
+
     </div>
   );
 }

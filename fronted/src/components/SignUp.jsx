@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import {FormControl} from "baseui/form-control";
+import {Input} from "baseui/input";
+import {Button} from "baseui/button";
 
 function SignUn({ handleFetch }) {
   const [user, setUser] = useState({
@@ -39,50 +42,48 @@ function SignUn({ handleFetch }) {
   return (
     <div>
       <form onSubmit={handlSingUn}>
-        <div>
-          <label htmlFor="firstName">
-            First Name
-            <input
+        <FormControl label="first name">
+          <Input
               type="text"
               name="firstName"
               required
               value={user.firstName}
               onChange={handlChange}
-            />
-          </label>
-          <label htmlFor="firstName">
-            Last Name
-            <input
+          />
+        </FormControl>
+        <FormControl label="last name">
+          <Input
               type="text"
               name="lastName"
               required
               value={user.lastName}
               onChange={handlChange}
-            />
-          </label>
-          <label htmlFor="email">
-            Email
-            <input
+          />
+        </FormControl>
+        <FormControl label="email">
+          <Input
               type="email"
               name="email"
               required
               value={user.email}
               onChange={handlChange}
-            />
-          </label>
-          <label htmlFor="password">
-            Password
-            <input
+          />
+        </FormControl>
+        <FormControl label="password">
+          <Input
               type="password"
               name="password"
               required
               value={user.password}
               onChange={handlChange}
-            />
-          </label>
-        </div>
-        <button type="submit">Sign Up</button>
+          />
+        </FormControl>
+
+
+
+        <Button type="submit">Submit</Button>
       </form>
+
     </div>
   );
 }
