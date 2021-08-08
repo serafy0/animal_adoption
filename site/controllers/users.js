@@ -48,6 +48,7 @@ exports.postSignIn = async (req, res, next) => {
     firstName: req.user.firstName,
     lastName: req.user.lastName,
     email: req.user.email,
+    id: req.user.id,
   });
 };
 // console.log(req.body);

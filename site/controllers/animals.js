@@ -108,5 +108,11 @@ exports.getImage= async (req,res)=>{
             return res.sendStatus(404)
 
         }
+}
 
+exports.editAnimalAnnouncement= async(req,res)=>{
+    const {id} = req.params
+    console.log('\x1b[34m%s\x1b[0m', req.body)
+   const  new_animal = Animal.update(req.body,{where:{id:id}})
+    res.sendStatus(200)
 }

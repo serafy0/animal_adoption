@@ -5,7 +5,8 @@ const router = express.Router();
 const animalControllers = require("../controllers/animals");
 const isAuth = require("../middleware/is-auth");
 
-router.post("/add-animal", isAuth, animalControllers.addAnimalAnnouncement);
+router.post("/animal", isAuth, animalControllers.addAnimalAnnouncement);
+router.put("/animal/:id", isAuth, animalControllers.editAnimalAnnouncement);
 router.get("/animal/:id",animalControllers.getOneAnimalById );
 router.get("/my-animals", isAuth, animalControllers.getAnimalsAddedByUser);
 router.post("/request-adoption/:animal_id", isAuth, animalControllers.requestToAdoptAnimal);
