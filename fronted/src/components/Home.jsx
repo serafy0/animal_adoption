@@ -17,7 +17,8 @@ const Home = (userData) => {
     type:"",
     breed: "",
     address: "",
-    animal_img:null
+    animal_img:null,
+    postedById:{}
 
   });
   const [animals, setAnimals] = useState(null);
@@ -43,9 +44,9 @@ const Home = (userData) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let formData = new FormData();
-    for(let ahh in animal){
-      formData.append(ahh, animal[ahh]);
-      console.error(ahh)
+    for(let property in animal){
+      formData.append(property, animal[property]);
+      console.error(property)
     }
     console.error("-----",animal)
     const settings = {
@@ -80,15 +81,17 @@ const Home = (userData) => {
       <div>
       {userData.firstName ? (
         <div>
-          <h1>Welcome {userData.firstName}</h1>
+          <H1>Welcome {userData.firstName}</H1>
           {animals ? (
             <div>
-              <h3>All Animals</h3>
+              <H3>All Animals</H3>
               <Grid
               >
               {animals.map((animal) => (
                     <Cell span={[4]}>
-                      <AnimalCard animal={animal}>
+                      <AnimalCard user={userData} animal={animal}
+                      en={enqueue}
+                      >
 
                       </AnimalCard>
                     </Cell>
@@ -109,7 +112,7 @@ const Home = (userData) => {
             <Cell >
             </Cell>
             <Cell  span={6}>
-           <AnimalForm upload={uploadFile} handleSubmit={handleSubmit} handleChange={handleChange} animal={animal} ></AnimalForm>
+           <AnimalForm upload={uploadFile} handleSubmit={handleSubmit} handleChange={handleChange} animal={animal}  ></AnimalForm>
             </Cell>
             <Cell>
             </Cell>

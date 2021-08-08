@@ -48,7 +48,11 @@ function App() {
 
       <div className="App">
       <Router>
-        <Route path="/" component={Nav} />
+        <Route path="/">
+          <Nav user={userData} setUserData={setUserData}/>
+
+        </Route>
+
         <Route exact path="/">
 
           <Home {...userData} />
