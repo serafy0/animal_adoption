@@ -27,9 +27,16 @@ const Animal = db.define(
         address: {
             type: DataTypes.STRING
         },
+        breed:{
+            type: DataTypes.STRING
+
+        },
         adopted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        animal_img :{
+            type:DataTypes.STRING
         }
     },
     {

@@ -1,11 +1,21 @@
 const Animal = require("../models/animals");
 const User = require("../models/user");
+const fs = require('fs');
 
 exports.addAnimalAnnouncement = async (req, res) => {
     const {name, description, age, type, breed, address} = req.body
-    if (req.session.user) {
+    const {animal_img} = req.files
+
 
         try {
+            const uploadPath =  process.env.UPLOADED_FILES_PATH + animal_img.name;
+            console.log(uploadPath)
+            await animal_img.mv(uploadPath, function(err) {
+                if (err) {
+                    console.log(err)
+                    return res.status(400).send(err)
+                }
+            });
             const animal = await Animal.create({
                 name: name,
                 description: description,
@@ -13,17 +23,15 @@ exports.addAnimalAnnouncement = async (req, res) => {
                 type,
                 breed: breed,
                 address: address,
-                postedById: req.userId
+                postedById: req.userId,
+                animal_img:uploadPath
             })
-            res.status(200).json(animal)
+            return res.status(200).json(animal)
 
         } catch (err) {
-            res.send(400).json(err)
+            return res.status(400).json(err)
         }
-    } else {
-        res.status(401).json(req.user)
 
-    }
 }
 
 exports.getAnimalsAddedByUser = async (req, res) => {
@@ -76,5 +84,29 @@ exports.getApplicantsToOneAnimal = async (req, res) => {
     }
     const applicants = await animal.getApplicants()
     res.json(applicants)
+
+}
+exports.getAllAnimals = async (req, res) => {
+
+    const animals = await Animal.findAll()
+
+    res.json(animals)
+}
+
+
+exports.getImage= async (req,res)=>{
+
+    const animal = await Animal.findByPk(req.params.id)
+
+    if (animal) {
+        if(animal.animal_img) {
+
+                res.sendFile(animal.animal_img)
+            };
+        }
+        else {
+            return res.sendStatus(404)
+
+        }
 
 }

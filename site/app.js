@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const port = 3001;
@@ -7,7 +8,7 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 // const path = require("path");
 const bodyParser = require("body-parser");
-
+const fileUpload = require('express-fileupload');
 const userRouter = require("./routes/users");
 const animalRouter = require("./routes/animals");
 
@@ -28,7 +29,9 @@ initPassport(passport);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
-
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+}));
 app.use(
   session({
     secret: "MySecret",
