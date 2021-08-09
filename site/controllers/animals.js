@@ -113,6 +113,17 @@ exports.getImage= async (req,res)=>{
 exports.editAnimalAnnouncement= async(req,res)=>{
     const {id} = req.params
     console.log('\x1b[34m%s\x1b[0m', req.body)
-   const  new_animal = Animal.update(req.body,{where:{id:id}})
+    const{animal_img}=req.files
+   const animal = await Animal.findByPk(id)
+    if(animal_img){
+
+        const uploadPath =  process.env.UPLOADED_FILES_PATH + animal_img.name;
+        console.log(animal_img)
+        await animal_img.mv(uploadPath)
+        animal.animal_img=uploadPath
+
+    }
+    await animal.update(req.body,{where:{id:id}})
+    await animal.save()
     res.sendStatus(200)
 }

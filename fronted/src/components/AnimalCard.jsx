@@ -42,15 +42,19 @@ const requestAdoption= async(id)=>{
 
 }
 const editAnimal= async(id,new_animal)=>{
+    const formData = new FormData()
+    for(let property in new_animal){
+        formData.append(property, new_animal[property]);
+        console.error(property)
+    }
+
     console.error(JSON.stringify(new_animal))
         const settings = {
         method: "PUT",
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
         },
-            body: JSON.stringify(new_animal)
+            body: formData
 
         };
     try {
