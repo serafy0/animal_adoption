@@ -89,6 +89,8 @@ const Home = (userData) => {
       {userData.firstName ? (
         <div>
           <H1>Welcome {userData.firstName}</H1>
+          <Button onClick={() => setIsOpen(true)}>add animal</Button>
+
           {animals ? (
             <div>
               <H3>All Animals</H3>
@@ -114,16 +116,12 @@ const Home = (userData) => {
           )}
 
           <Block/>
-          <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
           <Modal onClose={closeModal} isOpen={isOpen}>
             <ModalHeader>add animal</ModalHeader>
             <ModalBody>
 
             <AnimalForm  upload={uploadFile} handleSubmit={handleSubmit} handleChange={handleChange} animal={animal}  ></AnimalForm>
             </ModalBody>
-            <ModalFooter>
-              <ModalButton onClick={closeModal}>Add animal</ModalButton>
-            </ModalFooter>
           </Modal>
 
         </div>
