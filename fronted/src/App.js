@@ -42,7 +42,6 @@ function App() {
   useEffect(async()=>{
     await fetchUser(setUserData)
   },[])
-  console.log("hmm",userData)
   return (
       <SnackbarProvider>
 

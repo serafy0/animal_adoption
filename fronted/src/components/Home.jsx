@@ -8,6 +8,8 @@ import {
 import {Check} from "baseui/icon";
 import {Block} from "baseui/block";
 import {H1, H3} from "baseui/typography";
+import {Modal, ModalBody, ModalButton, ModalFooter, ModalHeader} from "baseui/modal";
+import {Button} from "baseui/button";
 const Home = (userData) => {
   const {enqueue} = useSnackbar();
   const [animal, setAnimal] = useState({
@@ -58,9 +60,10 @@ const Home = (userData) => {
     };
     try {
       const fetchResponse = await fetch(
-        `http://localhost:3001/add-animal`,
+        `http://localhost:3001/animal`,
         settings
       );
+      closeModal()
       enqueue({
         message: 'announcement added',
         startEnhancer: ({size}) => <Check size={size} />,
@@ -75,7 +78,11 @@ const Home = (userData) => {
       return e;
     }
   };
-  console.log(animals)
+  const [isOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
 
       <div>
@@ -90,7 +97,7 @@ const Home = (userData) => {
               {animals.map((animal) => (
                     <Cell span={[4]}>
                       <AnimalCard user={userData} animal={animal}
-                      en={enqueue}
+                      en={enqueue} setAnimal={setAnimal}
                       >
 
                       </AnimalCard>
@@ -107,17 +114,18 @@ const Home = (userData) => {
           )}
 
           <Block/>
-          <Grid >
+          <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
+          <Modal onClose={closeModal} isOpen={isOpen}>
+            <ModalHeader>add animal</ModalHeader>
+            <ModalBody>
 
-            <Cell >
-            </Cell>
-            <Cell  span={6}>
-           <AnimalForm upload={uploadFile} handleSubmit={handleSubmit} handleChange={handleChange} animal={animal}  ></AnimalForm>
-            </Cell>
-            <Cell>
-            </Cell>
+            <AnimalForm  upload={uploadFile} handleSubmit={handleSubmit} handleChange={handleChange} animal={animal}  ></AnimalForm>
+            </ModalBody>
+            <ModalFooter>
+              <ModalButton onClick={closeModal}>Add animal</ModalButton>
+            </ModalFooter>
+          </Modal>
 
-          </Grid>
         </div>
       ) : (
         <H1>Please sign in</H1>

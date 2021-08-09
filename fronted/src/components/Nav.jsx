@@ -26,13 +26,14 @@ const Nav = (props) => {
                 <StyledLink $as={Link} to="/sign-in">sign in</StyledLink>
             </NavigationItem>
         </NavigationList>:
-            <NavigationList $align={ALIGN.left} >
+            <NavigationList $align={ALIGN.right} >
                 <NavigationItem>
-                    <Button onClick={() => {
-                        localStorage.setItem("token", "");
-                        props.setUserData({})
-                    }
-                    }
+                    <Button
+                        onClick={() => {
+                            localStorage.setItem("token", "");
+                            props.setUserData({})
+                            }
+                        }
                     >logout</Button>
                 </NavigationItem>
             </NavigationList>

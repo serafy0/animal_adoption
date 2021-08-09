@@ -4,23 +4,22 @@ const fs = require('fs');
 
 exports.addAnimalAnnouncement = async (req, res) => {
     const {name, description, age, type, breed, address} = req.body
-    const {animal_img} = req.files
 
-
+    let uploadPath=""
         try {
-            const uploadPath =  process.env.UPLOADED_FILES_PATH + animal_img.name;
+        if(req.files) {
+            const {animal_img} = req.files
+
+            uploadPath = process.env.UPLOADED_FILES_PATH + animal_img.name;
             console.log(uploadPath)
-            await animal_img.mv(uploadPath, function(err) {
-                if (err) {
-                    console.log(err)
-                    return res.status(400).send(err)
-                }
-            });
+            await animal_img.mv(uploadPath)
+        }
+
             const animal = await Animal.create({
                 name: name,
                 description: description,
                 age: age,
-                type,
+                type:type,
                 breed: breed,
                 address: address,
                 postedById: req.userId,

@@ -4,6 +4,7 @@ import {useStyletron} from "baseui";
 import {Accordion, Panel} from "baseui/accordion";
 import AnimalForm from "./AnimalForm";
 import {useState} from "react";
+import {Check} from "baseui/icon";
 
 const Inner = ({children}) => {
     const [css, theme] = useStyletron();
@@ -94,7 +95,12 @@ const AnimalCard = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const res = await editAnimal(animal.id,new_animal)
-        props.en({})
+        props.en({
+            message: res.status,
+            startEnhancer: ({size}) => <Check size={size} />,
+
+        })
+
     };
 
 
