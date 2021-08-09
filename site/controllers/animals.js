@@ -113,9 +113,9 @@ exports.getImage= async (req,res)=>{
 exports.editAnimalAnnouncement= async(req,res)=>{
     const {id} = req.params
     console.log('\x1b[34m%s\x1b[0m', req.body)
-    const{animal_img}=req.files
    const animal = await Animal.findByPk(id)
-    if(animal_img){
+    if(req.files){
+        const {animal_img}=req.files
 
         const uploadPath =  process.env.UPLOADED_FILES_PATH + animal_img.name;
         console.log(animal_img)
