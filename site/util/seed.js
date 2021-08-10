@@ -5,6 +5,9 @@ const Animal = require("../models/animals")
 async function seed() {
     User.hasMany(Animal, {foreignKey:"postedById",as:"Poster"});
     Animal.belongsTo(User, {foreignKey:"postedById",as:"Poster"})
+    User.hasMany(Animal, {as:"Owner",foreignKey:"owner_id"});
+    Animal.belongsTo(User, {as:"Owner",foreignKey:"owner_id"})
+
 
     User.belongsToMany(Animal, {
         through: "animal_user",

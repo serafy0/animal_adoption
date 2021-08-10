@@ -24,7 +24,7 @@ const Inner = ({children}) => {
 
 }
 
-const requestAdoption= async(id)=>{
+const requestAdoption= async(id,en)=>{
     const settings = {
         method: "POST",
         headers: {
@@ -36,6 +36,13 @@ const requestAdoption= async(id)=>{
             `http://localhost:3001/request-adoption/${id}`,
             settings
         );
+        if(fetchResponse.ok){
+            en({
+                message: "adoption request sent!",
+                startEnhancer: ({size}) => <Check size={size} />,
+
+            })
+        }
     } catch (e) {
 
          console.log(e)
@@ -49,7 +56,6 @@ const editAnimal= async(id,new_animal)=>{
         console.error(property)
     }
 
-    console.error(JSON.stringify(new_animal))
         const settings = {
         method: "PUT",
         headers: {
@@ -84,7 +90,9 @@ const AnimalCard = (props) => {
         animal_img:animal.animal_img
 
     })
-    const handleChange = (e) => {
+
+    const [cardAnimal, updateCard] = useState(animal)
+        const handleChange = (e) => {
         setAnimal({ ...new_animal, [e.target.name]: e.target.value });
     };
     const uploadFile = (e) => {
@@ -96,10 +104,12 @@ const AnimalCard = (props) => {
         e.preventDefault();
         const res = await editAnimal(animal.id,new_animal)
         props.en({
-            message: res.status,
+            message: "animal was edited",
             startEnhancer: ({size}) => <Check size={size} />,
 
         })
+
+        updateCard(new_animal)
 
     };
 
@@ -111,24 +121,24 @@ const AnimalCard = (props) => {
         <Inner>
         <Card
             overrides={{Root: {style: {width: '328px'}}}}
-            title={animal.name}
+            title={cardAnimal.name}
             headerImage={`http://localhost:3001/image/${animal.id}`}
         >
             <StyledBody>
-                {animal.description}
+                {cardAnimal.description}
             </StyledBody>
             <Accordion
                 onChange={({ expanded }) => console.log(expanded)}
             >
                 <Panel title="more">
                     <StyledBody>
-                        age: {animal.age}
+                        age: {cardAnimal.age}
                     </StyledBody>
                     <StyledBody>
-                        type: {animal.type}
+                        type: {cardAnimal.type}
                     </StyledBody>
                     <StyledBody>
-                        address: {animal.address}
+                        address: {cardAnimal.address}
                     </StyledBody>
                 </Panel>
             </Accordion>
@@ -142,12 +152,21 @@ const AnimalCard = (props) => {
                     </Accordion>
                     :
                     <Button
-                        onClick={() => requestAdoption(animal.id)}
+                        onClick={() => requestAdoption(animal.id,props.en)}
                         overrides={{BaseButton: {style: {width: '100%'}}}}>
                         adopt me
                     </Button>
                 }
             </StyledAction>
+            {/*<StyledAction>*/}
+            {/*    <Button*/}
+            {/*        onClick={async ()=> await deleteAnimal(animal.id)}*/}
+            {/*        overrides={{BaseButton: {style: {width: '100%',backgroundColor:"red"}}}}>*/}
+
+            {/*        delete*/}
+            {/*    </Button>*/}
+            {/*</StyledAction>*/}
+
         </Card>
         </Inner>
         </div>

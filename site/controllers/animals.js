@@ -35,7 +35,10 @@ exports.addAnimalAnnouncement = async (req, res) => {
 
 exports.getAnimalsAddedByUser = async (req, res) => {
 
-    const myAnimals = await Animal.findAll({where: {postedById: req.userId}})
+    const myAnimals = await Animal.findAll({where:
+            {postedById: req.userId},
+            include: { model: User, as: 'applicants' }
+    })
 
     res.status(200).json(myAnimals)
 }
@@ -125,4 +128,23 @@ exports.editAnimalAnnouncement= async(req,res)=>{
     await animal.update(req.body,{where:{id:id}})
     await animal.save()
     res.sendStatus(200)
+}
+
+exports.deleteAnimalAnnouncement = async (req,res)=>{
+    const {animal_id}= req.params.id
+
+    const deleted_animal = await Animal.destroy({where:{
+        id:animal_id
+        }})
+    res.sendStatus(200)
+}
+
+exports.confirmAdoption = async(req,res)=>{
+
+    const {animal_id, user_id}=req.params;
+    const user = await User.findByPk(user_id)
+    const animal = await Animal.findByPk(animal_id)
+    await animal.setOwner(user)
+    await animal.update({adopted:true})
+    res.send(animal)
 }

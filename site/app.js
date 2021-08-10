@@ -59,6 +59,8 @@ app.use(userRouter);
 
 User.hasMany(Animal, {as:"Poster",foreignKey:"postedById"});
 Animal.belongsTo(User, {as:"Poster",foreignKey:"postedById"})
+User.hasMany(Animal, {as:"Owner",foreignKey:"owner_id"});
+Animal.belongsTo(User, {as:"Owner",foreignKey:"owner_id"})
 // Animal
 
 User.belongsToMany(Animal, {

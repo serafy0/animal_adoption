@@ -10,6 +10,7 @@ import {Block} from "baseui/block";
 import {H1, H3} from "baseui/typography";
 import {Modal, ModalBody, ModalButton, ModalFooter, ModalHeader} from "baseui/modal";
 import {Button} from "baseui/button";
+import {Notification} from "baseui/notification";
 const Home = (userData) => {
   const {enqueue} = useSnackbar();
   const [animal, setAnimal] = useState({
@@ -126,7 +127,7 @@ const Home = (userData) => {
 
         </div>
       ) : (
-        <H1>Please sign in</H1>
+        <Notification>Please sign in</Notification>
       )}
     </div>
 

@@ -29,12 +29,15 @@ const Nav = (props) => {
                 </NavigationItem>
 
                 <NavigationItem>
+                    <StyledLink $as={Link}  to="/dashboard">Dashboard</StyledLink>
+                </NavigationItem>
+                <NavigationItem>
 
                     <Button
                         onClick={() => {
                             localStorage.setItem("token", "");
                             props.setUserData({})
-                            }
+                        }
                         }
                     >logout</Button>
                 </NavigationItem>

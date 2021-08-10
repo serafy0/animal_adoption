@@ -3,12 +3,14 @@ import Nav from "./components/Nav";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Home from "./components/Home";
+import Test from "./components/Test";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import {SnackbarProvider} from "baseui/snackbar";
+import Dashboard from "./components/Dashboard";
 
 
-async function   fetchUser(setUserData){
+async function  fetchUser(setUserData){
   const token =localStorage.getItem("token")
   console.error(token)
   const settings = {
@@ -32,8 +34,6 @@ if(res.ok) {
 }
 
 }
-
-
 
 
 
@@ -62,6 +62,9 @@ function App() {
         </Route>
         <Route path="/sign-up">
           <SignUp handleFetch={setUserData} />
+        </Route>
+        <Route path="/dashboard">
+          <Dashboard handleFetch={setUserData} />
         </Route>
       </Router>
     </div>
