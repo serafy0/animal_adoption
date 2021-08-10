@@ -84,7 +84,7 @@ function Applicants(props) {
                                 {applicant.email}
                             </StyledBodyCell>
                             <StyledBodyCell>
-                                {(!props.adopted)?
+                                {(props.adopted!="adopted")?
                                     <Button
                                         onClick={confirmAdoption(props.animal_id,applicant.id)}
                                     >
