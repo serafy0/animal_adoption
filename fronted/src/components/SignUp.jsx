@@ -10,6 +10,7 @@ function SignUn({ handleFetch }) {
     password: "",
     firstName: "",
     lastName: "",
+    id:""
   });
   let history = useHistory();
   const handlChange = (e) => {
@@ -32,7 +33,7 @@ function SignUn({ handleFetch }) {
       );
       const data = await fetchResponse.json();
       console.log(data);
-      handleFetch(data.user);
+      // handleFetch(data.user);
       history.push("/");
       return data;
     } catch (e) {

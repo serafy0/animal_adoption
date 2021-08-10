@@ -14,11 +14,8 @@ const Nav = (props) => {
         <NavigationList $align={ALIGN.left}>
             <NavigationItem>Animal Adoption</NavigationItem>
         </NavigationList>
-        {(!props.user.id)?
+        {(props.user && !props.user.id)?
         <NavigationList $align={ALIGN.center}>
-            <NavigationItem>
-                <StyledLink $as={Link} to="/">Home</StyledLink>
-            </NavigationItem>
             <NavigationItem>
                 <StyledLink $as={Link}  to="/sign-up">Sign up</StyledLink>
             </NavigationItem>
@@ -28,6 +25,11 @@ const Nav = (props) => {
         </NavigationList>:
             <NavigationList $align={ALIGN.right} >
                 <NavigationItem>
+                    <StyledLink $as={Link} to="/">Home</StyledLink>
+                </NavigationItem>
+
+                <NavigationItem>
+
                     <Button
                         onClick={() => {
                             localStorage.setItem("token", "");
@@ -36,7 +38,9 @@ const Nav = (props) => {
                         }
                     >logout</Button>
                 </NavigationItem>
+
             </NavigationList>
+
         }
 
     </HeaderNavigation>
