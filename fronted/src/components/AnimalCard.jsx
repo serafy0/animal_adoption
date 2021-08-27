@@ -87,7 +87,8 @@ const AnimalCard = (props) => {
         type:animal.address,
         breed: animal.address,
         address: animal.address,
-        animal_img:animal.animal_img
+        animal_img:animal.animal_img,
+        adopted:animal.adopted
 
     })
 
@@ -153,19 +154,14 @@ const AnimalCard = (props) => {
                     :
                     <Button
                         onClick={() => requestAdoption(animal.id,props.en)}
-                        overrides={{BaseButton: {style: {width: '100%'}}}}>
-                        adopt me
+                        overrides={{BaseButton: {style: {width: '100%'}}}}
+                        disabled={animal.adopted}
+                    >
+                        {animal.adopted? "adopted":"adopt me"}
                     </Button>
+
                 }
             </StyledAction>
-            {/*<StyledAction>*/}
-            {/*    <Button*/}
-            {/*        onClick={async ()=> await deleteAnimal(animal.id)}*/}
-            {/*        overrides={{BaseButton: {style: {width: '100%',backgroundColor:"red"}}}}>*/}
-
-            {/*        delete*/}
-            {/*    </Button>*/}
-            {/*</StyledAction>*/}
 
         </Card>
         </Inner>
